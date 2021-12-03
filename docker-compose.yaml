@@ -1,0 +1,9 @@
+version: '3'
+services:
+  ws-broadcast: 
+    environment: 
+      - PORT=8080
+    build:
+      context: .
+    ports: 
+    - "8080:8080"
