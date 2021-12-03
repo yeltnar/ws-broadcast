@@ -30,8 +30,10 @@ wss.on('connection', function connection(ws) {
   });
 
   ws.send(JSON.stringify({
-    type:'welcome',
-    connection_id
+    payload: JSON.stringify({
+      type:'welcome',
+      connection_id
+    })
   }));
 });
 
