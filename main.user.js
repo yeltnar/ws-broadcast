@@ -7,16 +7,20 @@
 // @grant       none
 // @grant       GM_setValue
 // @grant       GM_getValue
-// @version     0.10
+// @version     0.11
 // @author      -
 // @description 10/7/2020, 11:58:24 AM
 // @run-at      document-end
 // @require     https://gist.githubusercontent.com/yeltnar/d288d6c2e8b255ab2ff3e31283b6823d/raw/ba822da3ec76a5945e522cc9168bae56630bdaa6/crypto-aes-gcm.js
 // ==/UserScript==
 
-const password = 'asdf';
+let password;
 
 (() => {
+  
+    if(password===undefined){
+      password = prompt('Whats the ws controll password');
+    }
    
     const search_params = new URLSearchParams(window.location.search);
     const current_session_id = search_params.get("session_id") || undefined;
