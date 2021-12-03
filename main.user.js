@@ -17,13 +17,7 @@
 const password = 'asdf';
 
 (() => {
-  
-  aesGcmEncrypt('its working',password).then(async(enc)=>{
-
-	console.log(await aesGcmDecrypt(enc, password))
-
-})
-  
+   
     const search_params = new URLSearchParams(window.location.search);
     const current_session_id = search_params.get("session_id") || undefined;
     console.log({current_session_id});
@@ -97,11 +91,17 @@ const password = 'asdf';
       
     };
 
-    socket.onmessage = function (event) {
+    socket.onmessage = async function (event) {
         console.log(`onmessage - ${event.data}`);
 
         const jso = JSON.parse(event.data);
-        const {payload} = jso;
+        let {payload} = jso;
+        console.log(jso);
+        if( jso.enc===true ){
+          payload = await aesGcmDecrypt(payload, password);
+        }
+        payload = JSON.parse(payload);
+      
       
       console.log(`event ${JSON.stringify(event)}`);
       
@@ -139,7 +139,7 @@ const password = 'asdf';
 //     }, 5000);
 
 
-    function socketSend(obj){
+    async function socketSend(obj){
       
       const ws_send_obj = {};
       
@@ -148,11 +148,23 @@ const password = 'asdf';
       
       if( obj.type==='host' ){
         ws_send_obj.type = obj.type;       
-        delete ws_send_obj.url
+        //delete ws_send_obj.url // TODO add?
+        ws_send_obj.enc=false;
       }else{
         obj.url = window.location.href;
         obj.session_id = current_session_id;
-        ws_send_obj.payload = obj;
+        
+        let payload = JSON.stringify(obj);
+        
+        // const enc = aesGcmEncrypt('its working',password);
+        payload = await aesGcmEncrypt(payload, password);
+          
+        //   .then(async(enc)=>{
+        //   console.log(await aesGcmDecrypt(enc, password))
+        // })
+        
+        ws_send_obj.payload = payload;
+        ws_send_obj.enc=true;
       }
       
       let to_send = JSON.stringify(ws_send_obj);
