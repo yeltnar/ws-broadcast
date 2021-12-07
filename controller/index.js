@@ -48,7 +48,7 @@ let password;
     // const url = "wss://Node-WSS.yeltnar.repl.co";
     // const url = "wss://192.168.1.132:8080";
     // const base_url = "abra-testing-node-server.herokuapp.com";
-    const base_url = "localhost:8080";
+    const base_url = /https?:\/\/(.*)\//.exec(window.location.href)[1];
     const ws_url = `ws://${base_url}`;
     // const ws_url = `wss://${base_url}`;
     const http_url = `http://${base_url}`;
