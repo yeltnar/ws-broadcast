@@ -24,32 +24,39 @@ let password;
         play: "play",
     };
 
-    let video_element;
+    // let video_element;
   
-    (()=>{
-      console.log('adding setup timeout...');
-      setTimeout(()=>{
-        console.log('adding...');
-        video_element = document.querySelector("video");
-        console.log('adding video element events to '+video_element);
+    // (()=>{
+    //   console.log('adding setup timeout...');
+    //   setTimeout(()=>{
+    //     console.log('adding...');
+    //     video_element = document.querySelector("video");
+    //     console.log('adding video element events to '+video_element);
 
-        // add event listeners for the video
-        video_element.addEventListener("play", () => {
-            console.log('you clicked play ',video_element);
-            socketSend(getPlayAction(video_element));
-        });
-        video_element.addEventListener("pause", () => {
-            console.log('you clicked pause');
-            socketSend(getPauseAction());
-        });
-      },3000);
-    })();
+    //     // add event listeners for the video
+    //     video_element.addEventListener("play", () => {
+    //         console.log('you clicked play ',video_element);
+    //         socketSend(getPlayAction(video_element));
+    //     });
+    //     video_element.addEventListener("pause", () => {
+    //         console.log('you clicked pause');
+    //         socketSend(getPauseAction());
+    //     });
+    //   },3000);
+    // })();
 
     // const url = "wss://Node-WSS.yeltnar.repl.co";
     // const url = "wss://192.168.1.132:8080";
     // const base_url = "abra-testing-node-server.herokuapp.com";
     const base_url = /https?:\/\/(.*)\//.exec(window.location.href)[1];
-    const ws_url = `ws://${base_url}`;
+
+    let ws_url='';
+    if(/https/.test(window.location.href)){
+        ws_url = `wss://${base_url}`;
+    }else{
+        ws_url = `ws://${base_url}`;        
+    }
+
     // const ws_url = `wss://${base_url}`;
     const http_url = `http://${base_url}`;
     // const http_url = `https://${base_url}`;
