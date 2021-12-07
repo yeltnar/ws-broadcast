@@ -1,6 +1,18 @@
 const WebSocket = require('ws');
+
+const server = require('http').createServer();
+
+const express = require('express');
+const app = express();
+
+app.use("/",express.static('./controller'));
+
+server.on('request',app)
  
-const wss = new WebSocket.Server({ port: process.env.PORT });
+const wss = new WebSocket.Server({ 
+  // port: process.env.PORT 
+  server
+});
 
 const ws_table = {};
  
@@ -36,6 +48,10 @@ wss.on('connection', function connection(ws) {
     })
   }));
 });
+
+server.listen(process.env.PORT, function(){
+  console.log(`server.listen on port ${process.env.PORT}`);
+})
 
 function forwardMessage( ws_from, action_obj ){
 
